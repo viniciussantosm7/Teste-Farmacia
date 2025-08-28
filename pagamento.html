@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang = "pt-BR">
+    <head>
+    <meta charset="UTF-8">
+    <title>Forma de Pagamento</title>
+    <script src="pagamento.js" defer></script>    
+    </head>
+        <body>
+            <h2>Finalizar Compra</h2>
+
+            <form id="formPagamento" onsubmit="processarPagamento(event)">
+                <h3>Escolha a forma de pagamento</h3>
+
+                <label>
+                    <input type="radio" name="pagamento" value="pix" required>
+                    Pix
+                </label><br><br>
+
+                <label>
+                    <input type="radio" name="pagamento" value="cartao" required>
+                    Cartão de Crédito
+                </label><br><br>
+
+                <button type="submit">Confirmar Pagamento</button>
+            </form>
+        </body>
+</html>
