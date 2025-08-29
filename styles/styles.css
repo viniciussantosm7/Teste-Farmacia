@@ -26,6 +26,8 @@ body {
     font-weight: 400;
 }
 
+
+
 .produtos {
     display: flex;
     flex-wrap: wrap;        
