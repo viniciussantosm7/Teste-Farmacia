@@ -1,0 +1,120 @@
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap');
+
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+:root {
+    --cor-de-fundo: #EBECEE;
+    --branco: #FFFFFF;
+    --laranja: #EB9B00;
+    --fonte-style: "Montserrat", sans-serif;
+    --azul-degrade: linear-gradient(97.54deg, #002F52 35.49%, #326589 165.37%);
+    --fonte-principal: "Poppins";
+    --cor-do-botao: #2192FF;
+    --sombra: #aaaa;
+}
+
+body {
+    padding: 2rem;
+    background-color: var(--cor-de-fundo);
+    font-family: var(--fonte-principal);
+    font-size: 16px;
+    font-weight: 400;
+}
+
+.produtos {
+    display: flex;
+    flex-wrap: wrap;        
+    justify-content: center;
+    gap: 20px;              
+    max-width: 1200px;      
+    margin: 0 auto;           
+    padding: 1rem;
+}
+
+.produto {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 6px;
+    background-color: var(--branco);
+    width: 200px;
+    height: 310px;
+    border-radius: 12px;
+    box-shadow: 4px 4px 12px var(--sombra);
+}
+
+.produto h1 {
+    font-size: 1.2rem;
+}
+
+.produto h2 {
+    font-size: 0.9rem;
+    color: var(--sombra);
+}
+
+.produto button {
+    background-color: var(--cor-do-botao);
+    height: 30px;
+    border: none;
+    padding: 4px;
+    width: 80%;
+    color: var(--branco);
+    font-size: 0.9rem;
+    font-weight: bold;
+    border-radius: 4px;
+}
+
+.produto button:hover {
+    background-color: #137de8;
+}
+
+
+.imagem {
+    width: 100%;
+    height: 50%;
+    border-top-left-radius: 12px;
+    border-top-right-radius: 12px;
+}
+
+.imagem:hover {
+    transform: rotate(20px);
+}
+
+.titulo {
+    text-align: center;
+    align-items: center;
+    background-color: var(--cor-do-botao);
+    height: 50px;
+    padding: 50px;
+    width: 100%;
+    color: var(--branco);
+    font-size: 2rem;
+    font-weight: bold;
+    border-radius: 6px;
+}
+
+.ver-carrinho button{
+    display: center;
+    align-items: center;
+    background-color: var(--laranja);
+    height: 50px;
+    border: none;
+    padding: 4px;
+    color: var(--branco);
+    font-size: 0.9rem;
+    font-weight: bold;
+    border-radius: 4px;
+    text-decoration: none;
+}
+
+
+.ver-carrinho {
+    display: flex;
+    justify-content: center;
+    margin-top: 2rem;
+}

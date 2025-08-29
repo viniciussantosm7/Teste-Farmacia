@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Carrinho - Farmácia Nova Vida</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css" />
+    <link rel="stylesheet" href="../styles/reset.css">
+    <link rel="stylesheet" href="../styles/styles.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+</head>
+
+<body onload="carregarCarrinho()">
+    <h2>Seu Carrinho</h2>
+    <ul id="listaCarrinho"></ul>
+    <h3 id="total">Total: R$0,00</h3>
+
+    <button onclick="limparCarrinho()">Esvaziar Carrinho</button>
+    <br><br>
+    <a href="catalogo.html"><button>Voltar ao Catálogo</button></a>
+    <a href="pagamento.html"><button>Ir para Pagamento</button></a>
+    <script src="../js/main.js" defer></script>
+</body>
+
+</html>
