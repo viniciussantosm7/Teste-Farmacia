@@ -1,6 +1,6 @@
-@import url("styles.css");
+@import url(/styles/styles.css);
 
-body {
+body{
     display: flex;
     justify-content: center;
     align-items: center;
@@ -26,7 +26,7 @@ body {
     padding: 0px 0 10px 0;
 } 
 
-.container{
+#formCadastro{
     width: 420px;
     background-color: transparent;
     border: 2px solid var(--preto);
@@ -37,14 +37,14 @@ body {
     backdrop-filter: blur(10px);
 }
 
-.container h1{
-    font-size: 1.5rem;
+#formCadastro h1{
+     font-size: 1.6rem;
     text-align: center;
     color: var(--preto);
     font-weight: 600;
 }
 
-.input-box {
+.input-box{
     position: relative;
     width: 100%;
     height: 50px;
@@ -61,25 +61,73 @@ body {
     font-size: 16px;
     color: var(--preto);
     padding: 20px 45px 20px 20px;
-    
 }
 
 .input-box input::placeholder{
     color: var(--bordas);
 }
 
-.input-box i {
-    position: absolute;
-    right: 20px;
-    top: 50%;
-    transform: translateY(-50%);
-    font-size: 20px;
+#agreement-label{
+    display: flex;
+    justify-content: space-between;
+    margin: -10px 0 10px;
+}
+
+.completo {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start; 
+    width: 100%;
+    margin: 20px 0;
+    gap: 5px;
+}
+
+.completo label{
+    font-weight: 600;
+}
+
+.completo input, .completo select{
+    width: 100%;
+    height: 45px;
+    background-color: transparent;
+    border: 2px solid var(--preto);
+    border-radius: 40px;
+    padding: 10px 20px;
+    font-size: 16px;
+    outline: none;
+}
+
+
+.completo a {
+    text-decoration: none;
+    color: var(--preto);
+    font-weight: 600;
+}
+
+.btn{
+    width: 100%;
+    height: 50px;
+    background: var(--verde-degrade);
+    border: none;
+    border-radius: 40px;
+    cursor: pointer;
+    font-size: 16px;
+    font-weight: 600;
+    box-shadow: 0 0 10px var(--preto);
+    margin-top: 10px;
+}
+
+.btn:hover {
+    background: transparent;
+    border: 2px solid var(--bordas);
+    color: var(--preto);
+    transition: 0.5s;
 }
 
 .lembre-se {
     display: flex;
     justify-content: space-between;
-    margin: -10px 0 10px;
+    margin: 50px 0 10px;
 }
 
 .lembre-se label input{
@@ -94,41 +142,5 @@ body {
 }
 
 .lembre-se a:hover{
-    text-decoration: underline;
-}
-
-.login{
-    width: 100%;
-    height: 50px;
-    background: var(--verde-degrade);
-    border: none;
-    border-radius: 40px;
-    cursor: pointer;
-    font-size: 16px;
-    font-weight: 600;
-    box-shadow: 0 0 10px var(--preto);
-    margin-top: 10px;
-}
-
-.login:hover{
-    background: transparent;
-    border: 2px solid var(--bordas);
-    color: var(--preto);
-    transition: 0.5s;
-}
-
-.link-registrar{
-    font-size: 14px;
-    text-align: center;
-    margin: 20px 0 15px;
-}
-
-.link-registrar a{
-    text-decoration: none;
-    font-weight: 600;
-    color: var(--verde-degrade);
-}
-
-.link-registrar a:hover{
     text-decoration: underline;
 }

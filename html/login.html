@@ -13,14 +13,19 @@
 
 <body>
     <main class="container">
-        <form action="">
-            <h1>Login Farmácia Nova Vida</h1>
+        <form id="formLogin" onsubmit="Login(event)">
+            <div class="container-img">
+                <img class="logo-inicio" src="../img/logo1.png" alt="imagem logo farmarcia nova vida">
+                <h1>Login Farmácia Nova Vida</h1>
+            </div>
+
             <div class="input-box">
-                <input placeholder="Usuário" type="email">
+                <input id="loginEmail" placeholder="Usuário" type="email" required>
                 <i class="bx bxs-user"></i>
             </div>
+
             <div class="input-box">
-                <input placeholder="Senha" type="password">
+                <input id="loginSenha" placeholder="Senha" type="password" required>
                 <i class="bx bxs-lock-alt"></i>
             </div>
 
@@ -32,14 +37,15 @@
                 <a href="#">Esqueci minha senha</a>
             </div>
 
-            <button type="submit">Login</button>
+            <button type="submit" class="login">Login</button>
 
             <div class="link-registrar">
-                <p>Não tem conta? <a href="#">Cadastre-se</a></p>
+                <p>Não tem conta? <a href="cadastro.html">Cadastre-se</a></p>
             </div>
         </form>
     </main>
 
+    <script src="../js/main.js" defer></script>
 </body>
 
 </html>

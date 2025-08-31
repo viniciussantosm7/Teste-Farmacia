@@ -1,88 +1,261 @@
+const getEl = id => document.getElementById(id);
+const getVal = id => (getEl(id)?.value || "").trim();
+const BRL = n => Number(n || 0).toLocaleString("pt-BR", { style: "currency", currency: "BRL" });
+
+function getUsuarioLogado() {
+  const u = localStorage.getItem("usuarioLogado");
+  try { return u ? JSON.parse(u) : null; } catch { return null; }
+}
+function getCarrinhoKey() {
+  const user = getUsuarioLogado();
+  const email = user?.email || "anonimo";
+  return `carrinho:${email}`;
+}
+function getCarrinho() {
+  const key = getCarrinhoKey();
+  try { return JSON.parse(localStorage.getItem(key)) || []; } catch { return []; }
+}
+function setCarrinho(carrinho) {
+  localStorage.setItem(getCarrinhoKey(), JSON.stringify(carrinho || []));
+}
+
 function Cadastrar(event) {
-    event.preventDefault();
+  event.preventDefault();
 
-    const nome = document.getElementById("nome").value;
-    const email = document.getElementById("email").value;
-    const endereco = document.getElementById("endereco").value;
-    const cidade = document.getElementById("cidade").value;
-    const estado = document.getElementById("estado").value;
+  const nome      = getVal("nome");
+  const email     = getVal("email");
+  const senha     = getEl("senha") ? getVal("senha") : "";
+  const endereco  = getVal("endereco");
+  const cidade    = getVal("cidade");
+  const estado    = getVal("estado");
+  const cep       = getEl("cep")    ? getVal("cep")    : "";   
+  const numero    = getEl("numero") ? getVal("numero") : "";   
+  const sobrenome = getEl("sobrenome") ? getVal("sobrenome") : ""; 
 
-    if (!nome || !email || !endereco || !cidade || !estado) {
-        alert("Por favor, preencha todos os campos!");
-        return;
-    }
 
-    localStorage.setItem("nomeCliente", nome);
+  const obrigatorios = [
+    ["nome", nome], ["email", email],
+    ...(getEl("senha") ? [["senha", senha]] : []),
+    ["endereco", endereco], ["cidade", cidade], ["estado", estado],
+    ...(getEl("cep") ? [["cep", cep]] : []),
+    ...(getEl("numero") ? [["numero", numero]] : []),
+  ];
+  const faltando = obrigatorios.find(([_, v]) => !v);
+  if (faltando) {
+    alert("Por favor, preencha todos os campos obrigatórios!");
+    return;
+  }
 
-    alert(`Cadastro realizado com sucesso!\nNome: ${nome}\nE-mail: ${email}`);
-    window.location.href = "catalogo.html";
+
+  const reEmail = /\S+@\S+\.\S+/;
+  if (!reEmail.test(email)) {
+    alert("Digite um e-mail válido.");
+    return;
+  }
+
+
+  if (getEl("senha") && senha.length < 6) {
+    alert("A senha deve ter no mínimo 6 caracteres.");
+    return;
+  }
+
+
+  if (getEl("cep") && !/^\d{5}-?\d{3}$/.test(cep)) {
+    alert("Digite um CEP válido (00000-000).");
+    return;
+  }
+
+
+  if (getEl("numero") && !/^\d+$/.test(numero)) {
+    alert("O número deve conter apenas dígitos.");
+    return;
+  }
+
+  // Salva usuários
+  const usuarios = JSON.parse(localStorage.getItem("usuarios") || "[]");
+  if (usuarios.find(u => u.email === email)) {
+    alert("Este e-mail já está cadastrado!");
+    return;
+  }
+
+  const novoUsuario = {
+    nome, sobrenome, email, senha, endereco, numero, cidade, estado, cep,
+    createdAt: new Date().toISOString()
+  };
+
+  usuarios.push(novoUsuario);
+  localStorage.setItem("usuarios", JSON.stringify(usuarios));
+
+  alert("Cadastro realizado com sucesso!");
+  window.location.href = "login.html";
 }
 
 
-function adicionarAoCarrinho(nome, preco) {
-    let carrinho = JSON.parse(localStorage.getItem("carrinho")) || [];
+function Login(event) {
+  event.preventDefault();
 
- 
-    let itemExistente = carrinho.find(item => item.nome === nome);
+  const email = getVal("loginEmail");
+  const senha = getVal("loginSenha");
+  const lembrar = getEl("lembrar")?.checked || false;
 
-    if (itemExistente) {
-        itemExistente.quantidade += 1;
-    } else {
-        carrinho.push({ nome, preco, quantidade: 1 });
-    }
+  const usuarios = JSON.parse(localStorage.getItem("usuarios") || "[]");
+  const usuarioValido = usuarios.find(u => u.email === email && u.senha === senha);
 
-    localStorage.setItem("carrinho", JSON.stringify(carrinho));
-    alert(`${nome} foi adicionado ao carrinho!`);
+  if (!usuarioValido) {
+    alert("E-mail ou senha incorretos!");
+    return;
+  }
+
+  localStorage.setItem("usuarioLogado", JSON.stringify(usuarioValido));
+  if (lembrar) localStorage.setItem("ultimoEmail", email);
+  else localStorage.removeItem("ultimoEmail");
+
+  alert("Login realizado com sucesso!");
+  window.location.href = "catalogo.html";
+}
+
+function Logout() {
+  localStorage.removeItem("usuarioLogado");
+  window.location.href = "login.html";
 }
 
 
-function carregarCarrinho() {
-    let carrinho = JSON.parse(localStorage.getItem("carrinho")) || [];
-    let lista = document.getElementById("listaCarrinho");
-    let total = 0;
+document.addEventListener("DOMContentLoaded", () => {
+  const emailInput = getEl("loginEmail");
+  if (emailInput) {
+    const last = localStorage.getItem("ultimoEmail");
+    if (last) emailInput.value = last;
+  }
 
-    if (!lista) return; 
 
+  const cepInput = getEl("cep");
+  if (cepInput) {
+    cepInput.addEventListener("input", () => {
+      let v = cepInput.value.replace(/\D/g, "").slice(0, 8);
+      if (v.length > 5) v = v.slice(0,5) + "-" + v.slice(5);
+      cepInput.value = v;
+    });
+  }
+
+
+  if (getEl("carrinhoItens") || getEl("listaCarrinho")) {
+    VerCarrinho();
+  }
+});
+
+
+function AdicionarCarrinho(nome, preco) {
+  if (!nome) return;
+
+  const valor = Number(preco);
+  if (Number.isNaN(valor)) {
+    alert("Preço inválido do produto.");
+    return;
+  }
+
+  const carrinho = getCarrinho();
+  const existente = carrinho.find(p => p.nome === nome);
+
+  if (existente) existente.quantidade += 1;
+  else carrinho.push({ nome, preco: valor, quantidade: 1 });
+
+  setCarrinho(carrinho);
+  alert(`${nome} adicionado ao carrinho!`);
+  VerCarrinho();
+}
+
+function AtualizarQuantidade(index, delta) {
+  const carrinho = getCarrinho();
+  if (!carrinho[index]) return;
+
+  carrinho[index].quantidade += delta;
+  if (carrinho[index].quantidade <= 0) carrinho.splice(index, 1);
+
+  setCarrinho(carrinho);
+  VerCarrinho();
+}
+
+function RemoverItem(index) {
+  const carrinho = getCarrinho();
+  carrinho.splice(index, 1);
+  setCarrinho(carrinho);
+  VerCarrinho();
+}
+
+function LimparCarrinho() {
+  setCarrinho([]);
+  VerCarrinho();
+}
+
+function VerCarrinho() {
+  const carrinho = getCarrinho();
+
+  const ul = getEl("listaCarrinho");
+  const totalH = getEl("total");
+  const div = getEl("carrinhoItens");
+
+  let total = 0;
+
+  if (ul) {
+    ul.innerHTML = "";
     if (carrinho.length === 0) {
-        lista.innerHTML = "<p>Seu carrinho está vazio.</p>";
-        document.getElementById("total").textContent = "Total: R$0,00";
-        return;
+      ul.innerHTML = "<p>Seu carrinho está vazio.</p>";
+      if (totalH) totalH.textContent = "Total: R$0,00";
+      return;
     }
 
-    lista.innerHTML = "";
-
-    carrinho.forEach(item => {
-        let li = document.createElement("li");
-        li.textContent = `${item.nome} - R$ ${item.preco.toFixed(2)} x ${item.quantidade}`;
-        lista.appendChild(li);
-        total += item.preco * item.quantidade;
+    carrinho.forEach((item, i) => {
+      total += item.preco * item.quantidade;
+      const li = document.createElement("li");
+      li.innerHTML = `
+        ${item.nome} — ${BRL(item.preco)} x ${item.quantidade}
+        <button onclick="AtualizarQuantidade(${i}, -1)">-</button>
+        <button onclick="AtualizarQuantidade(${i}, +1)">+</button>
+        <button onclick="RemoverItem(${i})">Remover</button>
+      `;
+      ul.appendChild(li);
     });
 
-    document.getElementById("total").textContent = "Total: R$ " + total.toFixed(2);
-}
+    if (totalH) totalH.textContent = `Total: ${BRL(total)}`;
+    return;
+  }
 
-
-function limparCarrinho() {
-    localStorage.removeItem("carrinho");
-    carregarCarrinho();
-}
-
-function processarPagamento(event) {
-    event.preventDefault();
-
-    const forma = document.querySelector('input[name="pagamento"]:checked');
-    if (!forma) {
-        alert("Selecione uma forma de pagamento!");
-        return;
+  if (div) {
+    div.innerHTML = "";
+    if (carrinho.length === 0) {
+      div.innerHTML = "<p>Seu carrinho está vazio.</p>";
+      return;
     }
 
-    if (forma.value === "cartao") {
-        alert("Você escolheu pagar com Cartão de Crédito");
-    } else if (forma.value === "pix") {
-        alert("Você escolheu pagar com Pix");
-    }
+    carrinho.forEach((item, i) => {
+      total += item.preco * item.quantidade;
+      const itemDiv = document.createElement("div");
+      itemDiv.className = "item-carrinho";
+      itemDiv.innerHTML = `
+        <p>${item.nome} — ${BRL(item.preco)} x ${item.quantidade}</p>
+        <div style="display:flex; gap:.5rem; margin:.25rem 0;">
+          <button onclick="AtualizarQuantidade(${i}, -1)">-</button>
+          <button onclick="AtualizarQuantidade(${i}, +1)">+</button>
+          <button onclick="RemoverItem(${i})">Remover</button>
+        </div>
+      `;
+      div.appendChild(itemDiv);
+    });
 
-    localStorage.removeItem("carrinho");
-
-    window.location.href = "confirmacao.html";
+    const totalDiv = document.createElement("div");
+    totalDiv.className = "total-carrinho";
+    totalDiv.innerHTML = `<h3>Total: ${BRL(total)}</h3>
+      <button onclick="LimparCarrinho()">Esvaziar carrinho</button>`;
+    div.appendChild(totalDiv);
+  }
 }
+
+
+window.Cadastrar = Cadastrar;
+window.Login = Login;
+window.Logout = Logout;
+window.AdicionarCarrinho = AdicionarCarrinho;
+window.VerCarrinho = VerCarrinho;
+window.RemoverItem = RemoverItem;
+window.AtualizarQuantidade = AtualizarQuantidade;
+window.LimparCarrinho = LimparCarrinho;
