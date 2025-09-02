@@ -250,7 +250,22 @@ function VerCarrinho() {
   }
 }
 
+function processarPagamento(event) {
+  event.preventDefault();
 
+  const forma = document.querySelector('input[name="pagamento"]:checked')?.value;
+  if (!forma) {
+    alert("Selecione uma forma de pagamento.");
+    return;
+  }
+
+  localStorage.setItem("formaPagamento", forma);
+
+  alert(`Você escolheu ${forma.toUpperCase()}. Redirecionando...`);
+  window.location.href = "sucesso-pagamento.html";
+}
+
+window.processarPagamento = processarPagamento;
 window.Cadastrar = Cadastrar;
 window.Login = Login;
 window.Logout = Logout;

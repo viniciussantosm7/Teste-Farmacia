@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Forma de Pagamento</title>
+    <title>Forma de Pagamento - Farmácia Nova Vida</title>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css" />
     <link rel="stylesheet" href="../styles/reset.css">
     <link rel="stylesheet" href="../styles/styles.css">
@@ -12,23 +12,26 @@
 </head>
 
 <body>
-    <h2>Finalizar Compra</h2>
+    <main>
+        <h2>Finalizar Compra</h2>
 
-    <form id="formPagamento" onsubmit="processarPagamento(event)">
-        <h3>Escolha a forma de pagamento</h3>
+        <form id="formPagamento" onsubmit="processarPagamento(event)">
+            <h3>Escolha a forma de pagamento</h3>
 
-        <label>
-            <input type="radio" name="pagamento" value="pix" required>
-            Pix
-        </label><br><br>
+            <div class="pagamento-opcao">
+                <input type="radio" id="pix" name="pagamento" value="pix" required>
+                <label for="pix">Pix</label>
+            </div>
 
-        <label>
-            <input type="radio" name="pagamento" value="cartao" required>
-            Cartão de Crédito
-        </label><br><br>
+            <div class="pagamento-opcao">
+                <input type="radio" id="cartao" name="pagamento" value="cartao" required>
+                <label for="cartao">Cartão de Crédito</label>
+            </div>
 
-        <button type="submit">Confirmar Pagamento</button>
-    </form>
+            <button type="submit">Confirmar Pagamento</button>
+        </form>
+    </main>
+
     <script src="../js/main.js" defer></script>
 </body>
 

@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Pagamento Concluído - Farmácia Nova Vida</title>
+  <link rel="stylesheet" href="../styles/reset.css">
+  <link rel="stylesheet" href="../styles/styles.css">
+</head>
+<body>
+  <main style="text-align: center; margin-top: 50px;">
+    <h2 id="mensagemSucesso">Pagamento realizado com sucesso!</h2>
+    <p id="detalhesPagamento"></p>
+    <br>
+    <a href="catalogo.html">
+      <button>Voltar ao Catálogo</button>
+    </a>
+  </main>
+
+  <script>
+    document.addEventListener("DOMContentLoaded", () => {
+      // pegar usuário logado
+      const usuario = JSON.parse(localStorage.getItem("usuarioLogado") || "{}");
+      const forma = localStorage.getItem("formaPagamento") || "não informada";
+      const nome = usuario?.nome || "Cliente";
+
+      // atualizar mensagens
+      document.getElementById("mensagemSucesso").textContent =
+        `Obrigado pela compra, ${nome}!`;
+
+      document.getElementById("detalhesPagamento").textContent =
+        `Forma de pagamento escolhida: ${forma.toUpperCase()}`;
+
+      // limpar carrinho do usuário
+      localStorage.removeItem(`carrinho:${usuario?.email || "anonimo"}`);
+    });
+  </script>
+</body>
+</html>
