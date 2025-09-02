@@ -28,6 +28,21 @@
                 <label for="cartao">Cartão de Crédito</label>
             </div>
 
+            <div id="dados-cartao" style="display:none; margin-top:10px;">
+        <label>Número do cartão:<br>
+            <input type="text" id="numero-cartao" maxlength="16" placeholder="0000 0000 0000 0000">
+        </label><br>
+        <label>Data de validade:<br>
+            <input type="text" id="validade-cartao" maxlength="5" placeholder="MM/AA">
+        </label><br>
+        <label>CVV:<br>
+            <input type="text" id="cvv-cartao" maxlength="3" placeholder="123">
+        </label><br>
+        <label>Nome do titular:<br>
+            <input type="text" id="nome-titular" placeholder="Nome como no cartão">
+        </label>
+    </div>
+
             <button type="submit">Confirmar Pagamento</button>
         </form>
     </main>

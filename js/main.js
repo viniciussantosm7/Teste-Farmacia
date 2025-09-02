@@ -140,6 +140,21 @@ document.addEventListener("DOMContentLoaded", () => {
 
   if (getEl("carrinhoItens") || getEl("listaCarrinho")) {
     VerCarrinho();
+  };
+
+const radios = document.querySelectorAll('input[name="pagamento"]');
+  const dadosCartao = getEl("dados-cartao");
+
+  if (radios && dadosCartao) {
+    radios.forEach(radio => {
+      radio.addEventListener("change", () => {
+        if (radio.value === "cartao" && radio.checked) {
+          dadosCartao.style.display = "block";
+        } else {
+          dadosCartao.style.display = "none";
+        }
+      });
+    });
   }
 });
 
@@ -257,6 +272,33 @@ function processarPagamento(event) {
   if (!forma) {
     alert("Selecione uma forma de pagamento.");
     return;
+  }
+
+  if (forma === 'cartao') {
+    const numero = getVal("numero-cartao").replace(/\s/g, '');
+    const validade = getVal("validade-cartao");
+    const cvv = getVal("cvv-cartao");
+    const nome = getVal("nome-titular");
+
+    if (!/^\d{16}$/.test(numero)) {
+      alert("Número do cartão inválido. Use 16 dígitos.");
+      return;
+    }
+
+    if (!/^\d{2}\/\d{2}$/.test(validade)) {
+      alert("Data de validade inválida. Use MM/AA.");
+      return;
+    }
+
+    if (!/^\d{3}$/.test(cvv)) {
+      alert("CVV inválido. Use 3 dígitos.");
+      return;
+    }
+
+    if (nome.length < 3) {
+      alert("Digite o nome do titular corretamente.");
+      return;
+    }
   }
 
   localStorage.setItem("formaPagamento", forma);
