@@ -19,19 +19,20 @@
 
   <script>
     document.addEventListener("DOMContentLoaded", () => {
-      // pegar usuário logado
+
       const usuario = JSON.parse(localStorage.getItem("usuarioLogado") || "{}");
       const forma = localStorage.getItem("formaPagamento") || "não informada";
       const nome = usuario?.nome || "Cliente";
 
-      // atualizar mensagens
+      document.getElementById("mensagemSucesso").textContent =
+        `Pagamento autorizado!` 
+      
       document.getElementById("mensagemSucesso").textContent =
         `Obrigado pela compra, ${nome}!`;
 
       document.getElementById("detalhesPagamento").textContent =
         `Forma de pagamento escolhida: ${forma.toUpperCase()}`;
 
-      // limpar carrinho do usuário
       localStorage.removeItem(`carrinho:${usuario?.email || "anonimo"}`);
     });
   </script>
