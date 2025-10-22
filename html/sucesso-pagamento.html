@@ -1,39 +1,35 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Pagamento Concluído - Farmácia Nova Vida</title>
-  <link rel="stylesheet" href="../styles/reset.css">
-  <link rel="stylesheet" href="../styles/styles.css">
+  <link rel="stylesheet" href="../styles/reset.css" />
+  <link rel="stylesheet" href="../styles/sucesso-pagamento.css" />
 </head>
 <body>
-  <main style="text-align: center; margin-top: 50px;">
-    <h2 id="mensagemSucesso">Pagamento realizado com sucesso!</h2>
-    <p id="detalhesPagamento"></p>
-    <br>
-    <a href="catalogo.html">
-      <button>Voltar ao Catálogo</button>
-    </a>
+  <main class="container">
+    <div class="checkmark">&#10004;</div>
+    <h1 id="mensagemSucesso">Pagamento realizado com sucesso!</h1>
+    <p id="detalhesPagamento" class="detalhes"></p>
+    <a href="catalogo.html" class="btn-voltar">Voltar ao Catálogo</a>
   </main>
 
   <script>
     document.addEventListener("DOMContentLoaded", () => {
-
       const usuario = JSON.parse(localStorage.getItem("usuarioLogado") || "{}");
       const forma = localStorage.getItem("formaPagamento") || "não informada";
       const nome = usuario?.nome || "Cliente";
 
-      document.getElementById("mensagemSucesso").textContent =
-        `Pagamento autorizado!` 
-      
-      document.getElementById("mensagemSucesso").textContent =
-        `Obrigado pela compra, ${nome}!`;
+      const msgSucesso = document.getElementById("mensagemSucesso");
+      const detalhes = document.getElementById("detalhesPagamento");
 
-      document.getElementById("detalhesPagamento").textContent =
-        `Forma de pagamento escolhida: ${forma.toUpperCase()}`;
+      msgSucesso.textContent = `Obrigado pela compra, ${nome}!`;
+      detalhes.textContent = `Forma de pagamento escolhida: ${forma.toUpperCase()}`;
 
-      localStorage.removeItem(`carrinho:${usuario?.email || "anonimo"}`);
+      if(usuario?.email){
+        localStorage.removeItem(`carrinho:${usuario.email}`);
+      }
     });
   </script>
 </body>

@@ -1,6 +1,5 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -9,8 +8,8 @@
     <link rel="stylesheet" href="../styles/reset.css">
     <link rel="stylesheet" href="../styles/styles.css">
     <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="stylesheet" href="../styles/pagamento.css">
 </head>
-
 <body>
     <main>
         <h2>Finalizar Compra</h2>
@@ -29,25 +28,97 @@
             </div>
 
             <div id="dados-cartao" style="display:none; margin-top:10px;">
-        <label>Número do cartão:<br>
-            <input type="text" id="numero-cartao" maxlength="16" placeholder="0000 0000 0000 0000">
-        </label><br>
-        <label>Data de validade:<br>
-            <input type="text" id="validade-cartao" maxlength="5" placeholder="MM/AA">
-        </label><br>
-        <label>CVV:<br>
-            <input type="text" id="cvv-cartao" maxlength="3" placeholder="123">
-        </label><br>
-        <label>Nome do titular:<br>
-            <input type="text" id="nome-titular" placeholder="Nome como no cartão">
-        </label>
-    </div>
+                <label>Número do cartão:<br>
+                    <input type="text" id="numero-cartao" maxlength="16" placeholder="0000 0000 0000 0000">
+                </label><br>
+                <label>Data de validade:<br>
+                    <input type="text" id="validade-cartao" maxlength="5" placeholder="MM/AA">
+                </label><br>
+                <label>CVV:<br>
+                    <input type="text" id="cvv-cartao" maxlength="3" placeholder="123">
+                </label><br>
+                <label>Nome do titular:<br>
+                    <input type="text" id="nome-titular" placeholder="Nome como no cartão">
+                </label>
+            </div>
 
-            <button type="submit">Confirmar Pagamento</button>
+            <div id="dados-pix" style="display:none; margin-top:10px; text-align:center;">
+                <p>Escaneie o QR Code abaixo com seu app bancário:</p>
+                <img src="https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=chavepix@farmacia.com" alt="QR Code PIX">
+                <p><strong>Chave PIX:</strong> farmacianovavida@chavepix.com</p>
+                <button type="button" onclick="confirmarPix()">Confirmar Pagamento PIX</button>
+                <p id="mensagem-pix" style="display:none; color: green; font-weight: bold; margin-top: 10px;">
+                    Pagamento via PIX confirmado! Obrigado pela sua compra.
+                </p>
+            </div>
+
+            <button type="submit">Finalizar Compra</button>
         </form>
     </main>
 
+    <!-- Modal já presente no main.js -->
+    <div id="modal" class="modal-overlay" style="display: none;">
+        <div class="modal-content">
+            <p id="modal-mensagem">Mensagem do modal</p>
+            <button id="modal-ok" class="modal-btn">OK</button>
+        </div>
+    </div>
+
+    <script>
+        let pagamentoPixConfirmado = false;
+
+        function mostrarOpcao(tipo) {
+            const cartao = document.getElementById('dados-cartao');
+            const pix = document.getElementById('dados-pix');
+            const mensagemPix = document.getElementById('mensagem-pix');
+
+            pagamentoPixConfirmado = false;
+            mensagemPix.style.display = 'none';
+
+            if (tipo === 'cartao') {
+                cartao.style.display = 'block';
+                pix.style.display = 'none';
+            } else if (tipo === 'pix') {
+                cartao.style.display = 'none';
+                pix.style.display = 'block';
+            }
+        }
+
+        function confirmarPix() {
+            document.getElementById('mensagem-pix').style.display = 'block';
+            pagamentoPixConfirmado = true;
+        }
+
+        function processarPagamento(event) {
+            event.preventDefault();
+            const tipoPagamento = document.querySelector('input[name="pagamento"]:checked')?.value;
+
+            if (!tipoPagamento) {
+                mostrarModal("Selecione uma forma de pagamento.");
+                return;
+            }
+
+            if (tipoPagamento === 'cartao') {
+                mostrarModal('Pagamento com cartão processado com sucesso!', () => {
+                    window.location.href = "sucesso-pagamento.html";
+                });
+            } else if (tipoPagamento === 'pix') {
+                if (pagamentoPixConfirmado) {
+                    mostrarModal('Pagamento via PIX confirmado com sucesso!', () => {
+                        window.location.href = "sucesso-pagamento.html";
+                    });
+                } else {
+                    mostrarModal('Por favor, confirme o pagamento via PIX antes de continuar.');
+                }
+            }
+        }
+
+        window.onload = function () {
+            document.getElementById('pix').addEventListener('change', () => mostrarOpcao('pix'));
+            document.getElementById('cartao').addEventListener('change', () => mostrarOpcao('cartao'));
+        };
+    </script>
+
     <script src="../js/main.js" defer></script>
 </body>
-
 </html>

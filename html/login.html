@@ -9,6 +9,40 @@
     <link rel="stylesheet" href="../styles/login.css">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <title>Farmácia Nova Vida Login</title>
+    <style>
+
+        .modal {
+            position: fixed;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            background: rgba(0,0,0,0.5);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 9999;
+            display: none;
+        }
+        .modal-content {
+            background: #fff;
+            padding: 20px 30px;
+            border-radius: 8px;
+            text-align: center;
+            max-width: 400px;
+            width: 90%;
+        }
+        #modal-ok {
+            margin-top: 15px;
+            padding: 8px 16px;
+            background: #4caf50;
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        #modal-ok:hover {
+            background: #45a049;
+        }
+    </style>
 </head>
 
 <body>
@@ -31,7 +65,7 @@
 
             <div class="lembre-se">
                 <label>
-                    <input type="checkbox">
+                    <input id="lembrar" type="checkbox">
                     Lembre-se
                 </label>
                 <a href="#">Esqueci minha senha</a>
@@ -44,6 +78,13 @@
             </div>
         </form>
     </main>
+
+    <div id="modal" class="modal">
+        <div class="modal-content">
+            <p id="modal-mensagem"></p>
+            <button id="modal-ok">OK</button>
+        </div>
+    </div>
 
     <script src="../js/main.js" defer></script>
 </body>

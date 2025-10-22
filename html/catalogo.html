@@ -14,6 +14,11 @@
 
   <h2 class="titulo">Catálogo de Produtos</h2>
 
+  <div id="mensagem-carrinho" style="display:none; position: fixed; top: 20px; right: 20px; background: #4CAF50; color: white; padding: 10px 20px; border-radius: 5px; z-index: 1000;">
+  Adicionado ao carrinho!
+</div>
+
+
   <section class="produtos">
     <section class="produto"> 
       <img src="../img/dipirona.png" alt="imagem de dipirona" class="imagem">
@@ -98,6 +103,19 @@
   <br><br>
   <a class="ver-carrinho" href="carrinho.html" ><button><img src="../img/icone-carrinho.svg">Carrinho</button></a>
   <script src="../js/main.js" defer></script>
+
+  <script>
+  function AdicionarCarrinho(nome, preco) {
+    
+    const mensagem = document.getElementById('mensagem-carrinho');
+    mensagem.style.display = 'block'; 
+
+    setTimeout(() => {
+      mensagem.style.display = 'none';
+    }, 3000);
+  }
+</script>
+
 </body>
 
 </html>

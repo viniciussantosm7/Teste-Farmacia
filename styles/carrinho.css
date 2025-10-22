@@ -1,0 +1,63 @@
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f5f5f5;
+    padding: 40px 20px;
+    color: #333;
+}
+
+h2 {
+    text-align: center;
+    color: #1a8c1a;
+    margin-bottom: 30px;
+}
+
+ul#listaCarrinho {
+    max-width: 800px;
+    margin: 0 auto 20px;
+    padding: 0;
+    list-style: none;
+}
+
+ul#listaCarrinho li {
+    background-color: #fff;
+    border: 1px solid #ddd;
+    margin-bottom: 10px;
+    padding: 15px;
+    border-radius: 6px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+#total {
+    text-align: center;
+    font-size: 1.5em;
+    font-weight: bold;
+    color: #000;
+    margin-top: 20px;
+}
+
+button {
+    background-color: #1a8c1a;
+    color: white;
+    border: none;
+    padding: 12px 20px;
+    margin: 10px auto;
+    display: block;
+    border-radius: 5px;
+    font-size: 1em;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+button:hover {
+    background-color: #157a15;
+}
+
+a button {
+    background-color: #2c7cd1;
+}
+
+a button:hover {
+    background-color: #2469af;
+}
